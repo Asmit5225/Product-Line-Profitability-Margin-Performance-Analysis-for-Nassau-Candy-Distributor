@@ -111,18 +111,19 @@ with st.sidebar:
     st.markdown("**Profitability Dashboard**")
     st.markdown("---")
 
+    st.markdown("### 🏭 Division")
+    all_divs = sorted(df_full["Division"].unique())
+    sel_divs = st.multiselect("Division", all_divs, default=all_divs)
+    if not sel_divs: sel_divs = all_divs
+    
     st.markdown("### 📅 Date Range")
     d0 = df_full["Order Date"].min().date()
     d1 = df_full["Order Date"].max().date()
     rng = st.date_input("Order date", value=(d0,d1), min_value=d0, max_value=d1)
     ds = pd.Timestamp(rng[0]) if len(rng)>=1 else pd.Timestamp(d0)
     de = pd.Timestamp(rng[1]) if len(rng)==2 else pd.Timestamp(d1)
-
-    st.markdown("### 🏭 Division")
-    all_divs = sorted(df_full["Division"].unique())
-    sel_divs = st.multiselect("Division", all_divs, default=all_divs)
-    if not sel_divs: sel_divs = all_divs
-
+    
+    
     st.markdown("### 📊 Margin Risk Threshold")
     threshold = st.slider("Risk below (%)", 0, 100, 50, 1,
                           help="Matches Tableau calc: < threshold → Risk")
